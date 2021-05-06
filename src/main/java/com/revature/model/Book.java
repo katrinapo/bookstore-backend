@@ -1,0 +1,132 @@
+package com.revature.model;
+
+import java.util.Arrays;
+
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.Lob;
+import javax.persistence.Table;
+
+@Entity
+@Table(name="book")
+public class Book {
+	
+	@Id
+	@Column(name="bookId")
+	@GeneratedValue(strategy=GenerationType.AUTO)
+	private int bookId;
+	
+	@Column(name="title", nullable=false)
+	private String title;
+	
+	@Column(name="author", nullable=false )
+	private String author;
+	
+	@Column(name="genre", nullable=false)
+	private String genre;
+	
+	@Column(name="cost", nullable=false)
+	private double cost;
+	
+	@Column(name="quantity")
+	private int quantity;
+	
+	@Lob
+	@Column(name="image")
+	private byte[] image;
+
+	public Book() {
+		super();
+		// TODO Auto-generated constructor stub
+	}
+
+	public Book(int bookId, String title, String author, String genre, double cost, int quantity, byte[] image) {
+		super();
+		this.bookId = bookId;
+		this.title = title;
+		this.author = author;
+		this.genre = genre;
+		this.cost = cost;
+		this.quantity = quantity;
+		this.image = image;
+	}
+	
+	public Book(String title, String author, String genre, double cost, int quantity, byte[] image) {
+		super();
+		this.title = title;
+		this.author = author;
+		this.genre = genre;
+		this.cost = cost;
+		this.quantity = quantity;
+		this.image = image;
+	}
+
+	public int getBookId() {
+		return bookId;
+	}
+
+	public void setBookId(int bookId) {
+		this.bookId = bookId;
+	}
+
+	public String getTitle() {
+		return title;
+	}
+
+	public void setTitle(String title) {
+		this.title = title;
+	}
+
+	public String getAuthor() {
+		return author;
+	}
+
+	public void setAuthor(String author) {
+		this.author = author;
+	}
+
+	public String getGenre() {
+		return genre;
+	}
+
+	public void setGenre(String genre) {
+		this.genre = genre;
+	}
+
+	public double getCost() {
+		return cost;
+	}
+
+	public void setCost(double cost) {
+		this.cost = cost;
+	}
+
+	public int getQuantity() {
+		return quantity;
+	}
+
+	public void setQuantity(int quantity) {
+		this.quantity = quantity;
+	}
+
+	public byte[] getImage() {
+		return image;
+	}
+
+	public void setImage(byte[] image) {
+		this.image = image;
+	}
+
+	@Override
+	public String toString() {
+		return "Book [bookId=" + bookId + ", title=" + title + ", author=" + author + ", genre=" + genre + ", cost="
+				+ cost + ", quantity=" + quantity + ", image=" + Arrays.toString(image) + "]";
+	}
+	
+	
+	
+	
+}
