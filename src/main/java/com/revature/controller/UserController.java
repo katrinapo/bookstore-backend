@@ -9,6 +9,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -53,5 +54,46 @@ public class UserController {
 		return new ResponseEntity<List<BookUser>>(uServ.getAllUsers(), HttpStatus.OK);
 	}
 	
-
+	@GetMapping("/{username}")
+	public ResponseEntity<BookUser> getUserByUsername(@PathVariable("username") String name){
+		BookUser bUser = uServ.getUserByName(name);
+		if(bUser==null) {
+			return new ResponseEntity<>(null,HttpStatus.NOT_FOUND);
+		}
+		return new ResponseEntity<BookUser>(bUser,HttpStatus.OK);
+	}
+	
+	@GetMapping("/{username}/{password}")
+	public ResponseEntity<BookUser> loginUser(@PathVariable("username") String name,@PathVariable("password") String pass){
+		BookUser bUser = uServ.getUserByNameAndPassword(name, pass);
+		if(bUser==null) {
+			return new ResponseEntity<>(null,HttpStatus.NOT_FOUND);
+		}
+		return new ResponseEntity<BookUser>(bUser,HttpStatus.OK);
+	}
+	
+	@GetMapping("/{userrole}")
+	public ResponseEntity<List<BookUser>> getUserByRole(@PathVariable("userrole") String role){
+		List<BookUser> bUser = uServ.getUserByRole(role);
+		if(bUser==null) {
+			return new ResponseEntity<>(null,HttpStatus.NOT_FOUND);
+		}
+		return new ResponseEntity<List<BookUser>>(bUser,HttpStatus.OK);
+	}
+	@GetMapping("/{email}")
+	public ResponseEntity<BookUser> getUserByEmail(@PathVariable("email") String email){
+		BookUser bUser = uServ.getUserByEmail(email);
+		if(bUser==null) {
+			return new ResponseEntity<>(null,HttpStatus.NOT_FOUND);
+		}
+		return new ResponseEntity<BookUser>(bUser,HttpStatus.OK);
+	}
+	@GetMapping("/{id}")
+	public ResponseEntity<BookUser> getUser(@PathVariable("id") int id){
+		BookUser bUser = uServ.getUserById(id);
+		if(bUser==null) {
+			return new ResponseEntity<>(null,HttpStatus.NOT_FOUND);
+		}
+		return new ResponseEntity<BookUser>(bUser,HttpStatus.OK);
+	}
 }
