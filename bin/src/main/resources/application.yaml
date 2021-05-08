@@ -1,0 +1,18 @@
+
+server: 
+  port: 9020
+# if this was a .properties spring.datasource.url = your url
+# spring.datasource.username = username ... etc
+spring:
+  datasource:
+    url: jdbc:postgresql://database-1.ces41klochst.us-east-2.rds.amazonaws.com:5432/bookdb
+    username: bookuser
+    password: Passw0rd
+    driver-class-name: org.postgresql.Driver
+  jpa:
+    database-platform: org.hibernate.dialect.PostgreSQLDialect
+    show-sql: false
+    hibernate:
+      ddl-auto: create
+      
+    

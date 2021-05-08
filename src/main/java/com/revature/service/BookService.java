@@ -32,4 +32,16 @@ public class BookService {
 		bRepo.save(book);
 	}
 	
+	
+	
+	
+	
+	public Book findBookByGenre(String genre) {
+		 return bRepo.findByGenre(genre);
+	}
+	
+	public Book findBookByTitleAndAuthor(String title, String author) {
+		return bRepo.findByTitleAndAuthor(title, author);
+	}
+	
 }
