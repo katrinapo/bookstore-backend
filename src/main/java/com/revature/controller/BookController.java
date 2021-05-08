@@ -9,6 +9,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -35,7 +36,9 @@ public class BookController {
 	
 	@GetMapping("/initial")
 	public ResponseEntity<String> insertInitialValues() {
-		List<Book> bList = new ArrayList<Book>(Arrays.asList(new Book("Intro to Java", "Jacob", "Computers", 80.00,10,null),new Book("Intro to Angular", "Jacob", "Computers", 90.00,8,null), new Book("Intro to JavaScript", "Jacob", "Computers", 40.00,8,null)));
+		List<Book> bList = new ArrayList<Book>(Arrays.asList(new Book("Intro to Java", "Jacob", "Computers", 80.00,10,null),
+							new Book("Intro to Angular", "Jacob", "Computers", 90.00,8,null), 
+							new Book("Intro to JavaScript", "Jacob", "Computers", 40.00,8,null)));
 	
 		for (Book book: bList) {
 			bServ.insertBook(book);
@@ -49,19 +52,30 @@ public class BookController {
 		return new ResponseEntity<List<Book>>(bServ.getAllBooks(), HttpStatus.OK);
 	}
 	
+	@GetMapping("/{id}")
+	public ResponseEntity<Book> getBookId(@PathVariable("bookid") int id){
+		Book book = bServ.getBookById(id);
+		if(book==null) {
+			return new ResponseEntity<>(null, HttpStatus.NOT_FOUND);
+		}
+		return new ResponseEntity<Book>(book, HttpStatus.OK);
+	}
 
+	@GetMapping("/{title}")
+	public ResponseEntity<Book> getBookTitle(@PathVariable("booktitle") String title){
+		Book book = bServ.getBookWithTitle(title);
+		if(book==null) {
+			return new ResponseEntity<>(null, HttpStatus.NOT_FOUND);
+		}
+		return new ResponseEntity<Book>(book, HttpStatus.OK);
+	}
 	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
+	@GetMapping("/{author}")
+	public ResponseEntity<Book> getBookAuthor(@PathVariable("bookauthor") String author){
+		Book book = bServ.getBookWithAuthor(author);
+		if(book==null) {
+			return new ResponseEntity<>(null, HttpStatus.NOT_FOUND);	
+		}
+		return new ResponseEntity<Book>(book, HttpStatus.OK);
+	}
 }
