@@ -48,7 +48,7 @@ public class BookUser {
 
 	public BookUser() {
 		super();
-		// TODO Auto-generated constructor stub
+		
 	}
 
 
