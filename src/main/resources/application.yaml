@@ -1,6 +1,6 @@
 
 server: 
-  port: 9025
+  port: 9015
 # if this was a .properties spring.datasource.url = your url
 # spring.datasource.username = username ... etc
 spring:
