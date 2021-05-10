@@ -4,10 +4,14 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.ui.Model;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 
@@ -20,6 +24,8 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.revature.model.BookUser;
+import com.revature.model.Status;
+import com.revature.repository.UserRepository;
 import com.revature.service.UserService;
 
 @RestController
@@ -28,6 +34,7 @@ import com.revature.service.UserService;
 public class UserController {
 	
 	private UserService uServ;
+	private UserRepository uRepo;
 
 	public UserController() {
 		super();
@@ -119,5 +126,37 @@ public class UserController {
 			}
 			return new ResponseEntity<BookUser>(bookuser, HttpStatus.OK);
 	}
-
+	@PostMapping("/register")
+    public Status registerUser(@Validated @RequestBody BookUser newUser) {
+        List<BookUser> users = uServ.getAllUsers();
+        System.out.println("New user: " + newUser.toString());
+        for (BookUser user : users) {
+            System.out.println("Registered user: " + newUser.toString());
+            if (user.equals(newUser)) {
+                System.out.println("User Already exists!");
+                return Status.USER_ALREADY_EXISTS;
+            }
+        }
+        uServ.insertUser(newUser);
+        return Status.SUCCESS;
+    }
+	
+	@PostMapping("/login")
+    public Status loginUser(@Validated @RequestBody BookUser user,HttpServletRequest request) {
+        List<BookUser> users = uServ.getAllUsers();
+        for (BookUser other : users) {
+            if (other.getUserName().equals(user.getUserName())&& other.getPassWord().equals(user.getPassWord())) {
+                
+                return Status.SUCCESS;
+               
+            }
+            request.getSession().setAttribute("user",user);
+        }
+        return Status.FAILURE;
+    }
+    @PostMapping("/logout")
+    public Status logUserOut(HttpServletRequest request) {
+    	request.getSession().invalidate();
+        return Status.SUCCESS;
+    }
 }
