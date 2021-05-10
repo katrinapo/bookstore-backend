@@ -31,5 +31,21 @@ public class BookService {
 	public void insertBook(Book book) {
 		bRepo.save(book);
 	}
+
+	public Book getBookById(int id){
+		return bRepo.findByBookId(id);
+	}
+	
+	public Book getBookWithTitle(String title) {
+		return bRepo.findByTitle(title);
+	}
+	
+	public List<Book> getBooksByGenre(String genre){
+		return bRepo.findAllByGenre(genre);
+	}
+	
+	public List<Book> getBooksByAuthor(String author){
+		return bRepo.findAllByGenre(author);
+	}
 	
 }
