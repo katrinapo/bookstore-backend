@@ -47,13 +47,6 @@ public class BookService {
 		return bRepo.findAllByGenre(author);
 	}
 	
-	public Book getBookById(int id){
-		return bRepo.findByBookId(id);
-	}
-	
-	public Book getBookWithTitle(String title) {
-		return bRepo.findByTitle(title);
-	}
 	
 	public Book getBookWithAuthor(String author) {
 		return bRepo.findByAuthor(author);
