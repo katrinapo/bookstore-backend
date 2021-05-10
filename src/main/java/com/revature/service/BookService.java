@@ -4,7 +4,6 @@ import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-
 import com.revature.model.Book;
 import com.revature.repository.BookRepository;
 
@@ -46,6 +45,18 @@ public class BookService {
 	
 	public List<Book> getBooksByAuthor(String author){
 		return bRepo.findAllByGenre(author);
+	}
+	
+	public Book getBookById(int id){
+		return bRepo.findByBookId(id);
+	}
+	
+	public Book getBookWithTitle(String title) {
+		return bRepo.findByTitle(title);
+	}
+	
+	public Book getBookWithAuthor(String author) {
+		return bRepo.findByAuthor(author);
 	}
 	
 }
