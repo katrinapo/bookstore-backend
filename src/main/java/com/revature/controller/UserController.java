@@ -12,8 +12,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
-
-
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 
@@ -75,9 +74,9 @@ public class UserController {
 	}
 	
 	
-	@GetMapping("/userrole")
-	public ResponseEntity<List<BookUser>> getUserByRole(@RequestParam("userrole") String role){
-		List<BookUser> bUser = uServ.getUserByRole(role);
+	@GetMapping("/userrole/{userrole}")
+	public ResponseEntity<List<BookUser>> getUserByRole(@PathVariable String userrole){
+		List<BookUser> bUser = uServ.getUserByRole(userrole);
 		if(bUser==null) {
 			return new ResponseEntity<>(null,HttpStatus.NOT_FOUND);
 		}
@@ -91,8 +90,8 @@ public class UserController {
 		}
 		return new ResponseEntity<BookUser>(bUser,HttpStatus.OK);
 	}
-	@GetMapping("/id")
-	public ResponseEntity<BookUser> getUser(@RequestParam("id") int id){
+	@GetMapping("/id/{id}")
+	public ResponseEntity<BookUser> getUser(@PathVariable int id){
 		BookUser bUser = uServ.getUserById(id);
 		if(bUser==null) {
 			return new ResponseEntity<>(null,HttpStatus.NOT_FOUND);
@@ -100,8 +99,8 @@ public class UserController {
 		return new ResponseEntity<BookUser>(bUser,HttpStatus.OK);
 	}
 
-	@GetMapping("/bookuser")
-	public ResponseEntity<BookUser> getBookUserNamePathParam(@RequestParam("username") String username) {
+	@GetMapping("/bookuser/{username}")
+	public ResponseEntity<BookUser> getBookUserNamePathParam(@PathVariable String username) {
 		BookUser bookuser = uServ.getUserByUserName(username);
 		if(bookuser==null) {
 			return new ResponseEntity<BookUser>(HttpStatus.NOT_FOUND);
