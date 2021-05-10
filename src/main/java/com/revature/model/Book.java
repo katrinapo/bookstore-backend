@@ -8,18 +8,20 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Lob;
+import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 
+@SequenceGenerator(name="seq", initialValue=1000, allocationSize=100)
 @Entity
 @Table(name="book")
 public class Book {
 	
 	@Id
 	@Column(name="bookId")
-	@GeneratedValue(strategy=GenerationType.AUTO)
+	@GeneratedValue(strategy=GenerationType.SEQUENCE, generator="seq")
 	private int bookId;
 	
-	@Column(name="title", nullable=false)
+	@Column(name="title", nullable=false, unique=true)
 	private String title;
 	
 	@Column(name="author", nullable=false )

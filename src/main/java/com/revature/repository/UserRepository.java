@@ -13,5 +13,8 @@ public interface UserRepository extends JpaRepository<BookUser, Integer>{
 	public BookUser findByUserRole(String userRole);
 	public BookUser findByEmail(String email);
 	public BookUser findByUserName(String userName);
+	public BookUser findByUserNameAndPassWord(String userName, String passWord);
+
+	//public BookUser findByUserNameAndPassWordAndUserRole(String userName, String password, String userRole);
 
 }

@@ -32,5 +32,12 @@ public class UserService {
 		uRepo.save(bookUser);
 	}
 	
+	public BookUser getUserByUserName(String username) {
+		return uRepo.findByUserName(username);
+	}
+	
+	public BookUser getUserByUserNameAndPassWord(String username, String password) {
+		return uRepo.findByUserNameAndPassWord(username, password);
+	}
 	
 }
