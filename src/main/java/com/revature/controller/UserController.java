@@ -4,7 +4,6 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-import javax.servlet.http.HttpServletRequest;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -138,21 +137,23 @@ public class UserController {
     }
 	
 	@PostMapping("/login")
-    public Status loginUser(@Validated @RequestBody BookUser user,HttpServletRequest request) {
-        List<BookUser> users = uServ.getAllUsers();
-        for (BookUser other : users) {
-            if (other.getUserName().equals(user.getUserName())&& other.getPassWord().equals(user.getPassWord())) {
-                
-                return Status.SUCCESS;
-               
+	@CrossOrigin(origins = "http://localhost:4200")
+    public BookUser loginUser(@RequestBody BookUser user) throws Exception {
+		String tempUsername = user.getUserName();
+		String tempPassword = user.getPassWord();
+		BookUser userObj = null;
+          if(tempUsername!=null && tempPassword!=null) {
+        	  
+                userObj = uServ.getUserByUserNameAndPassWord(tempUsername, tempPassword);
+            
             }
-            request.getSession().setAttribute("user",user);
+          
+          if (userObj == null) {
+        	  throw new Exception("Bad credentials");
+          }
+          return userObj;
+           
         }
-        return Status.FAILURE;
-    }
-    @PostMapping("/logout")
-    public Status logUserOut(HttpServletRequest request) {
-    	request.getSession().invalidate();
-        return Status.SUCCESS;
-    }
+
+    
 }
