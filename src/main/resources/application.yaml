@@ -1,6 +1,6 @@
 
 server: 
-  port: 9020
+  port: 9015
 # if this was a .properties spring.datasource.url = your url
 # spring.datasource.username = username ... etc
 spring:
@@ -13,6 +13,4 @@ spring:
     database-platform: org.hibernate.dialect.PostgreSQLDialect
     show-sql: false
     hibernate:
-      ddl-auto: create
-      
-    
+      ddl-auto: update

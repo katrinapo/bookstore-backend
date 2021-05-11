@@ -28,9 +28,34 @@ public class UserService {
 		return uRepo.findAll();
 	}
 	
+	
+	
 	public void insertUser(BookUser bookUser) {
 		uRepo.save(bookUser);
 	}
+	public BookUser getUserByName(String name){
+		return uRepo.findByUserName(name);
+	}
+	public BookUser getUserByNameAndPassword(String name,String pass) {
+		return uRepo.findByUserNameAndPassWord(name, pass);
+	}
+	public BookUser getUserByEmail(String email) {
+		return uRepo.findByEmail(email);
+	}
 	
+	public List<BookUser> getUserByRole(String role) {
+		return uRepo.findByUserRole(role);
+	}
+	public BookUser getUserById(int id) {
+		return uRepo.findByUserId(id);
+	}
+	
+	public BookUser getUserByUserName(String username) {
+		return uRepo.findByUserName(username);
+	}
+	
+	public BookUser getUserByUserNameAndPassWord(String username, String password) {
+		return uRepo.findByUserNameAndPassWord(username, password);
+	}
 	
 }
