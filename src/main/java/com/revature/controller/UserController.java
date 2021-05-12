@@ -121,6 +121,7 @@ public class UserController {
 			}
 			return new ResponseEntity<BookUser>(bookuser, HttpStatus.OK);
 	}
+
 	@PostMapping("/register")
     public Status registerUser(@Validated @RequestBody BookUser newUser) {
         List<BookUser> users = uServ.getAllUsers();
@@ -155,5 +156,4 @@ public class UserController {
            
         }
 
-    
 }
