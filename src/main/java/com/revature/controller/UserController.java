@@ -121,6 +121,7 @@ public class UserController {
 			}
 			return new ResponseEntity<BookUser>(bookuser, HttpStatus.OK);
 	}
+
 	@PostMapping("/register")
     public Status registerUser(@RequestBody BookUser user)throws Exception {
         List<BookUser> users = uServ.getAllUsers();
@@ -158,6 +159,10 @@ public class UserController {
           return userObj;
            
         }
+<<<<<<< HEAD
         
     
+=======
+
+>>>>>>> 3be76127e11f64ab5b3d6e954913daa5c0408b2b
 }

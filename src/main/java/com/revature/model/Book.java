@@ -36,16 +36,16 @@ public class Book {
 	@Column(name="quantity")
 	private int quantity;
 	
-	@Lob
+	
 	@Column(name="image")
-	private byte[] image;
+	private String image;
 
 	public Book() {
 		super();
 		// TODO Auto-generated constructor stub
 	}
 
-	public Book(int bookId, String title, String author, String genre, double cost, int quantity, byte[] image) {
+	public Book(int bookId, String title, String author, String genre, double cost, int quantity, String image) {
 		super();
 		this.bookId = bookId;
 		this.title = title;
@@ -56,7 +56,7 @@ public class Book {
 		this.image = image;
 	}
 	
-	public Book(String title, String author, String genre, double cost, int quantity, byte[] image) {
+	public Book(String title, String author, String genre, double cost, int quantity, String image) {
 		super();
 		this.title = title;
 		this.author = author;
@@ -114,21 +114,19 @@ public class Book {
 		this.quantity = quantity;
 	}
 
-	public byte[] getImage() {
+	public String getImage() {
 		return image;
 	}
 
-	public void setImage(byte[] image) {
+	public void setImage(String image) {
 		this.image = image;
 	}
 
 	@Override
 	public String toString() {
 		return "Book [bookId=" + bookId + ", title=" + title + ", author=" + author + ", genre=" + genre + ", cost="
-				+ cost + ", quantity=" + quantity + ", image=" + Arrays.toString(image) + "]";
+				+ cost + ", quantity=" + quantity + ", image=" + image + "]";
 	}
-	
-	
-	
-	
+
+
 }

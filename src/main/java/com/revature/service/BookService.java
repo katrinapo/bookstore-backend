@@ -47,9 +47,22 @@ public class BookService {
 		return bRepo.findAllByGenre(author);
 	}
 	
-	
 	public Book getBookWithAuthor(String author) {
 		return bRepo.findByAuthor(author);
+	}
+	
+	public Book updateBook(Book book) {
+		int id = book.getBookId();
+		
+		Book b = bRepo.findByBookId(id);
+		b.setTitle(book.getTitle());
+		b.setAuthor(book.getAuthor());
+		b.setGenre(book.getGenre());
+		b.setCost(book.getCost());
+		b.setQuantity(book.getQuantity());
+		b.setImage(book.getImage());
+		
+		return bRepo.save(b);
 	}
 	
 }
