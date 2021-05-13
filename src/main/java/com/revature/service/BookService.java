@@ -30,6 +30,10 @@ public class BookService {
 	public void insertBook(Book book) {
 		bRepo.save(book);
 	}
+	
+	public void deleteBook(Book book) {
+		bRepo.delete(book);
+	}
 
 	public Book getBookById(int id){
 		return bRepo.findByBookId(id);
@@ -64,5 +68,8 @@ public class BookService {
 		
 		return bRepo.save(b);
 	}
+	
+	
+	
 	
 }

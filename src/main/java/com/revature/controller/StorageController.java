@@ -39,10 +39,14 @@ public class StorageController {
 		return new ResponseEntity<>(service.uploadFile(file, title), HttpStatus.OK);
 	}
 	
+	@PutMapping("/upload/{file}")
+	public ResponseEntity<String> upload(@PathVariable MultipartFile file, String title) {
+		return new ResponseEntity<>(service.uploadFile(file, title), HttpStatus.OK);
+	}
+	
     @DeleteMapping("/delete/{fileName}")
     public ResponseEntity<String> deleteFile(@PathVariable String fileName) {
         return new ResponseEntity<>(service.deleteFile(fileName), HttpStatus.OK);
     }
 }
 
-//https://www.youtube.com/watch?v=fUNyaKDgJd4&list=PLZTETldyguF0ogvkEzN-p6b73dXgCBhn9&index=16
