@@ -58,4 +58,29 @@ public class UserService {
 		return uRepo.findByUserNameAndPassWord(username, password);
 	}
 	
+	public void  updateResetPassword(String token, String email) throws UserNotFoundException {
+		BookUser user = uRepo.findByEmail(email);
+		
+		if(user != null) {
+			user.setResetPasswordToken(token);
+			uRepo.save(user);
+		}
+		else {
+			throw new UserNotFoundException("Could not fond any customer with email " + email);
+		}
+		
+	}
+	
+	public BookUser get(String resetPosswordToken) {
+		return uRepo.findByResetPasswordToken(resetPosswordToken);
+		
+	}
+	
+	public void updatePassword(BookUser user,String newPassword) {
+		user.setPassWord(newPassword);
+		user.setResetPasswordToken(null);
+		
+		uRepo.save(user);
+	}
+	
 }
