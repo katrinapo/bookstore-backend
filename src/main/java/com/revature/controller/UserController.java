@@ -122,22 +122,26 @@ public class UserController {
 			return new ResponseEntity<BookUser>(bookuser, HttpStatus.OK);
 	}
 	@PostMapping("/register")
-    public Status registerUser(@Validated @RequestBody BookUser newUser) {
+    public Status registerUser(@RequestBody BookUser user)throws Exception {
         List<BookUser> users = uServ.getAllUsers();
-        System.out.println("New user: " + newUser.toString());
-        for (BookUser user : users) {
-            System.out.println("Registered user: " + newUser.toString());
-            if (user.equals(newUser)) {
-                System.out.println("User Already exists!");
-                return Status.USER_ALREADY_EXISTS;
+        
+        System.out.println("New user: " + user.toString());
+        for (BookUser user1 : users) {
+            System.out.println("Registered user: " + user.toString());
+            if (user1.getUserName().equals(user.getUserName())) {
+                System.out.println("Username Already exists!");
+                throw new Exception("Username already Exists");
+            }
+            if (user1.getEmail().equals(user.getEmail())) {
+                System.out.println("User with that email Already exists!");
+                throw new Exception("User with that email already Exists");
             }
         }
-        uServ.insertUser(newUser);
+        uServ.insertUser(user);
         return Status.SUCCESS;
     }
 	
 	@PostMapping("/login")
-	@CrossOrigin(origins = "http://localhost:4200")
     public BookUser loginUser(@RequestBody BookUser user) throws Exception {
 		String tempUsername = user.getUserName();
 		String tempPassword = user.getPassWord();
@@ -154,6 +158,6 @@ public class UserController {
           return userObj;
            
         }
-
+        
     
 }
