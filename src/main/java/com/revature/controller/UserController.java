@@ -2,6 +2,7 @@ package com.revature.controller;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.LinkedHashMap;
 import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
@@ -14,6 +15,7 @@ import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -21,9 +23,8 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.revature.model.BookUser;
 import com.revature.model.Status;
+import com.revature.service.MailService;
 import com.revature.service.UserService;
-
-import net.bytebuddy.utility.RandomString;
 
 @RestController
 @RequestMapping(value="/users")
@@ -43,6 +44,7 @@ public class UserController {
 		super();
 		this.uServ = uServ;
 	}
+	
 	
 	@GetMapping("/initial")
 	public ResponseEntity<String> insertInitialValues(){
@@ -123,6 +125,7 @@ public class UserController {
 			}
 			return new ResponseEntity<BookUser>(bookuser, HttpStatus.OK);
 	}
+	
 	@PostMapping("/register")
     public Status registerUser(@Validated @RequestBody BookUser newUser) {
         List<BookUser> users = uServ.getAllUsers();
@@ -158,20 +161,45 @@ public class UserController {
     }
     
     @PostMapping("/forgotpassword")
-    public String processForgotPasswordForm(HttpServletRequest request) {
+    public String processForgotPasswordForm(@RequestBody LinkedHashMap<String,String> email) throws Exception {
+  	   	System.out.println("method is hit");
     	
-//    	@Autowired
+    	System.out.println("Email" +email.get("email"));
+    	MailService.sendMail(email.get("email"));
+		return null;
     	
-    	
-    	
-    	String email = request.getParameter("email");
-    	String token = RandomString.make(45);
+    }
+    
+    @GetMapping("/forgotpassword1")
+    public String processForgotPasswordForm(@RequestParam String email) throws Exception {
+    	BookUser user = uServ.getUserByUserName(email);
+    	String email2 = user.getEmail();
+  	   	System.out.println("method is hit");
     	
     	System.out.println("Email" +email);
-    	System.out.println("Token" + token);
+    	MailService.sendMail(email2);
 		return null;
     	
     }
     
     
+    @PutMapping("/updatepassword")
+    public Status updatePassword(@RequestBody LinkedHashMap<String,String> user, @RequestBody String password) {
+		System.out.println("user is " + user.get("user"));
+		System.out.println("Password is "+password);
+//    	uServ.updatePassword(user, password);
+	
+		return Status.SUCCESS;
+    }
+    
+//    public static void main(String[] args) throws Exception {
+//		MailService.sendMail(email);
+//    	UserController uc = new UserController();
+//    	
+//    	BookUser user1 = new BookUser(1,"bobjones@test.com","Bob","Jones","123123","9089992323","testUser1","customer");
+//    	String password = "456789";
+//    	uc.updatePassword(user1, password);
+//		}    
+	
+
 }

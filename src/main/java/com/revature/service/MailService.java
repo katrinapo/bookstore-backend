@@ -17,6 +17,7 @@ public class MailService {
 	public static void sendMail(String recipient) throws Exception {
 		System.out.println("preparing to send email");
 		
+		System.out.println("recipient is " +recipient);
 		Properties properties = new Properties();
 		
 		properties.put("mail.smtp.auth","true");
@@ -24,8 +25,8 @@ public class MailService {
 		properties.put("mail.smtp.host", "smtp.gmail.com");
 		properties.put("mail.smtp.port", "587");
 		
-		String myAccountEmail = " "; //add a bookstore gmail account
-		String password = " "; // add bookstore gmail password
+		String myAccountEmail = "shrestha.zenith@gmail.com"; 
+		String password = "goLe62426$&";
 		
 		Session session = Session.getInstance(properties,new Authenticator() {
 			@Override
@@ -61,9 +62,9 @@ public class MailService {
 			return null;
 		
 	}
-	
+//	
 //	public static void main(String[] args) throws Exception {
 //		MailService.sendMail("shrestha.zenith@gmail.com");
 //	}
-	
+//	
 }
