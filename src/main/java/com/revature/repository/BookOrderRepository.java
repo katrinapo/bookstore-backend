@@ -12,6 +12,7 @@ public interface BookOrderRepository extends JpaRepository<BookOrder, Integer> {
 	public List<BookOrder> findAll();
 	public BookOrder findByOrderId(int orderid);
 	
-	public BookOrder findByBookuser(BookUser bookuser);
+	public List<BookOrder> findByBookuser(BookUser bookuser);
+	
 
 }
