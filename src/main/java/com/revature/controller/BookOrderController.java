@@ -107,4 +107,10 @@ public class BookOrderController {
 		return new ResponseEntity<List<BookOrder>>(oServ.getByBookUser(user), HttpStatus.OK);
 	}
 	
+	@PutMapping("/approve")
+	public BookOrder approveBookOrder(@RequestBody BookOrder bookorder) {
+		return oServ.approveBookOrder(bookorder);
+	}
+	
+
 }
