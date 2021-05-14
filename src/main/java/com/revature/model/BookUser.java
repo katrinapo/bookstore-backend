@@ -68,8 +68,7 @@ public class BookUser {
 	public BookUser(String userName, String passWord, String firstName, String lastName, String email,
 			String phoneNumber, String userRole) {
 		super();
-		
-		this.userName = userName;
+				this.userName = userName;
 		this.passWord = passWord;
 		this.firstName = firstName;
 		this.lastName = lastName;

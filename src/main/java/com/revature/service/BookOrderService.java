@@ -35,8 +35,8 @@ public class BookOrderService {
 		return oRepo.findByOrderId(orderid);
 	}
 	
-	public BookOrder getByBookUser(BookUser bookuser) {
-		return oRepo.findByBookuser(bookuser);
+	public List<BookOrder> getByBookUser(BookUser bookuser) {
+		return (List<BookOrder>) oRepo.findByBookuser(bookuser);
 	}
 
 

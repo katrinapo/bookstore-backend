@@ -12,6 +12,7 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
+import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
@@ -24,6 +25,7 @@ public class BookOrder {
 
 	@Id
 	@Column(name="orderid", unique=true)
+	@GeneratedValue(strategy=GenerationType.AUTO)
 	private int orderId;
 	
 	@Column(name="totalcost")
@@ -38,24 +40,14 @@ public class BookOrder {
 	@ManyToOne(fetch = FetchType.EAGER)
 	private BookUser bookuser;
 
-	@OneToMany(cascade = CascadeType.ALL, orphanRemoval = true)
-	private List<Book> books = new ArrayList<>();
+	@ManyToMany(cascade=CascadeType.MERGE)
+	private List<Book> books;
 
 	public BookOrder() {
 		super();
 		// TODO Auto-generated constructor stub
 	}
 
-	public BookOrder(int orderId, double totalCost, boolean isapproved, LocalDate date, BookUser bookuser,
-			List<Book> books) {
-		super();
-		this.orderId = orderId;
-		this.totalCost = totalCost;
-		this.isapproved = isapproved;
-		this.date = date;
-		this.bookuser = bookuser;
-		this.books = books;
-	}
 	
 	public BookOrder(double totalCost, boolean isapproved, LocalDate date, BookUser bookuser,
 			List<Book> books) {
