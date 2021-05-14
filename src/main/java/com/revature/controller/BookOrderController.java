@@ -87,4 +87,10 @@ public class BookOrderController {
 		return new ResponseEntity<Object>(oServ.getByOrderId(bookorder.getOrderId()), HttpStatus.CREATED);
 	}
 	
+	@PutMapping("/approve")
+	public BookOrder approveBookOrder(@RequestBody BookOrder bookorder) {
+		return oServ.approveBookOrder(bookorder);
+	}
+	
+
 }
