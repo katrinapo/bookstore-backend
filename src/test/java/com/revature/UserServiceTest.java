@@ -98,6 +98,53 @@ public class UserServiceTest {
 			assertEquals("123123", buser.getPassWord());
 			assertEquals("Bob", buser.getFirstName());
 	 }
-	
+	@Test
+	public void getUserByNameAndPasswordTest() {
+		when(repo.findByUserNameAndPassWord("testUser1","123123" )).thenReturn(new BookUser(1,"testUser1", "123123", "Bob", "Jones","bobjones@test.com", "9089992323", "customer"));
+		
+		BookUser buser = service.getUserByUserNameAndPassWord("testUser1", "123123");
+		assertEquals(1, buser.getUserId());
+		assertEquals("testUser1", buser.getUserName());
+		assertEquals("123123", buser.getPassWord());
+		assertEquals("Bob", buser.getFirstName());
+	}
 
+	@Test
+	public void getUserByRoleTest() {
+		
+		BookUser bookuser = new BookUser();
+		bookuser.setUserId(1);
+		bookuser.setUserName("testUser1");
+		bookuser.setPassWord("123123");
+		bookuser.setFirstName("Bob");
+		bookuser.setLastName("Jones");
+		bookuser.setEmail("bobjones@test.com");
+		bookuser.setPhoneNumber("9089992323");
+		bookuser.setUserRole("customer");
+		
+		List<BookUser> buserList = new ArrayList<>();
+		buserList.add(bookuser);
+		
+		when(repo.findByUserRole("customer")).thenReturn(buserList);
+		List<BookUser> roles = service.getUserByRole("customer");
+		
+		assertEquals(1, roles.size());
+		verify(repo, times(1)).findByUserRole("customer");
+		/*
+		 * Book book = new Book();
+		book.setBookId(1);
+		book.setTitle("Intro to spring");
+		book.setAuthor("Katrina");
+		book.setGenre("any");
+		
+		List<Book> bookList = new ArrayList<>();
+		bookList.add(book);
+		
+		when(repo.findAllByGenre("any")).thenReturn(bookList);
+		List<Book> books = service.getBooksByGenre("any");
+		
+		assertEquals(1, books.size());
+		verify(repo, times(1)).findAllByGenre("any");
+		 */
+	}
 }
