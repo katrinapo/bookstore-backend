@@ -43,6 +43,10 @@ public class BookUser {
 	@Column(name="userrole")
 	private String userRole;
 	
+	@Column(name="reset_password_token")
+	private String resetPasswordToken;
+	
+	
 	@OneToMany(mappedBy="bookuser")
 	private List<BookOrder> bookorders = new ArrayList<>();
 
@@ -155,6 +159,16 @@ public class BookUser {
 
 	public void setUserRole(String userRole) {
 		this.userRole = userRole;
+	}
+	
+	
+	public String getResetPasswordToken() {
+		return resetPasswordToken;
+	}
+
+
+	public void setResetPasswordToken(String resetPasswordToken) {
+		this.resetPasswordToken = resetPasswordToken;
 	}
 
 
