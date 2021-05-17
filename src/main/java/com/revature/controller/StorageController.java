@@ -14,13 +14,14 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
+import com.revature.model.Book;
 import com.revature.service.BookService;
 import com.revature.service.StorageService;
 
 
 @RestController
 @RequestMapping(value="/books")
-@CrossOrigin(origins="*") 
+@CrossOrigin(origins = "*")
 public class StorageController {
 
 	@Autowired
@@ -33,10 +34,23 @@ public class StorageController {
 		super();
 		this.bServ = bServ;
 	}
-
+	
+	@CrossOrigin(origins = "http://localhost:4200/bookinventory")
 	@PutMapping("/uploadimage")
 	public ResponseEntity<String> uploadFile(@RequestParam(value="file") MultipartFile file, String title) {
 		return new ResponseEntity<>(service.uploadFile(file, title), HttpStatus.OK);
+	}
+	
+	@CrossOrigin(origins = "http://localhost:4200/bookinventory")
+	@PutMapping("/upload/{file}")
+	public ResponseEntity<String> upload(@PathVariable MultipartFile file, String title) {
+		return new ResponseEntity<>(service.uploadFile(file, title), HttpStatus.OK);
+	}
+	
+	@CrossOrigin(origins = "*")
+	@PutMapping("/uploadd")
+	public ResponseEntity<String> uploadd(@PathVariable MultipartFile file) {
+		return new ResponseEntity<>(service.uploadFile2(file), HttpStatus.OK);
 	}
 	
     @DeleteMapping("/delete/{fileName}")
@@ -45,4 +59,3 @@ public class StorageController {
     }
 }
 
-//https://www.youtube.com/watch?v=fUNyaKDgJd4&list=PLZTETldyguF0ogvkEzN-p6b73dXgCBhn9&index=16

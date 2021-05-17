@@ -53,17 +53,15 @@ public class StorageService {
     }
 	
 
-    public byte[] downloadFile(String fileName) {
-        S3Object s3Object = s3Client.getObject(bucketName, fileName);
-        S3ObjectInputStream inputStream = s3Object.getObjectContent();
-        try {
-            byte[] content = IOUtils.toByteArray(inputStream);
-            return content;
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-        return null;
-    }
+	public String uploadFile2(MultipartFile file) {
+		File fileObj = convertMultiPartFileToFile(file);
+        String fileName = file.getOriginalFilename();
+        s3Client.putObject(new PutObjectRequest(bucketName, fileName, fileObj));
+        fileObj.delete();
+        
+        String imageUrl = String.valueOf(s3Client.getUrl(bucketName, fileName));
+        return "uploaded!";
+	}
 
 
     public String deleteFile(String fileName) {

@@ -3,23 +3,23 @@ package com.revature.controller;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
-import java.util.Optional;
+
+
+import org.apache.log4j.Logger;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
-
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
-
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
-
 
 import com.revature.model.Book;
 import com.revature.service.BookService;
@@ -30,6 +30,7 @@ import com.revature.service.BookService;
 public class BookController {
 	
 	private BookService bServ;
+	private static Logger log = Logger.getLogger(BookController.class);
 
 	public BookController() {
 		super();
@@ -45,14 +46,12 @@ public class BookController {
 	@GetMapping("/initial")
 	public ResponseEntity<String> insertInitialValues() {
 
-		List<Book> bList = new ArrayList<Book>(Arrays.asList(
-				new Book(1,"Intro to Java", "Jacob", "Computers", 80.00,10,null),
-				new Book(2,"Intro to Angular", "Jacob", "Computers", 90.00,8,null), 
-				new Book(3,"Intro to JavaScript", "Jacob", "Computers", 40.00,8,null),
-				new Book("To Kill A Mocking Bird", "Harper Lee", "Fiction", 30.00,10,null),
-				new Book("Animal Farm", "George Orwell", "Fiction", 20.00,10,null)));
+
+		List<Book> bList = new ArrayList<Book>(Arrays.asList(new Book("Animal Farm", "George Orwell", "Fiction", 4.00,10,"https://bookimagesbucket.s3.us-east-2.amazonaws.com/animalfarm.jpg"),new Book("To Kill A Mockingbird", "Harper Lee", "Fiction", 6.00,8,"https://bookimagesbucket.s3.us-east-2.amazonaws.com/tokillamockingbird.jpg"), new Book("Black Swan", "Nassim Taleb", "Economy", 6.00,8,null)));
+
 		for (Book book: bList) {
 			bServ.insertBook(book);
+			log.info("Books inserted initially.");
 		}
 		
 		return new ResponseEntity<String>("Book Inserted",HttpStatus.CREATED);
@@ -68,7 +67,9 @@ public class BookController {
 	public ResponseEntity<Book> getBookId(@RequestParam("id") int id){
 		Book book = bServ.getBookById(id);
 		if(book==null) {
+			log.info("No books found");
 			return new ResponseEntity<>(null, HttpStatus.NOT_FOUND);
+
 		}
 		return new ResponseEntity<Book>(book, HttpStatus.OK);
 	}
@@ -79,6 +80,7 @@ public class BookController {
 		if(book==null) {
 			return new ResponseEntity<>(null, HttpStatus.NOT_FOUND);
 		}
+		log.info("Book returned by id.");
 		return new ResponseEntity<Book>(book, HttpStatus.OK);
 	}
 
@@ -89,6 +91,7 @@ public class BookController {
 		if(book==null) {
 			return new ResponseEntity<>(null, HttpStatus.NOT_FOUND);
 		}
+		log.info("Book returned by title.");
 		return new ResponseEntity<Book>(book, HttpStatus.OK);
 	}
 	
@@ -121,6 +124,18 @@ public class BookController {
 	@PutMapping("/updatebook")
 	public Book updateBook(@RequestBody Book book) {
 		return bServ.updateBook(book);
+		
+	}
+	
+	@PutMapping("/addImage")
+	public Book uploadImage(@RequestBody Book book, String imageURL) {
+		 return bServ.addImage(book);
+	}
+	
+	@DeleteMapping("/delete")
+	public ResponseEntity<String> deleteBook(@RequestBody Book book) {
+		bServ.deleteBook(book);
+		return new ResponseEntity<>("resource Deleted", HttpStatus.GONE);
 		
 	}
 

@@ -1,13 +1,13 @@
 package com.revature.model;
 
-import java.util.Arrays;
+
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.Lob;
+
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 
@@ -45,16 +45,6 @@ public class Book {
 		// TODO Auto-generated constructor stub
 	}
 
-	public Book(int bookId, String title, String author, String genre, double cost, int quantity, String image) {
-		super();
-		this.bookId = bookId;
-		this.title = title;
-		this.author = author;
-		this.genre = genre;
-		this.cost = cost;
-		this.quantity = quantity;
-		this.image = image;
-	}
 	
 	public Book(String title, String author, String genre, double cost, int quantity, String image) {
 		super();
@@ -65,14 +55,18 @@ public class Book {
 		this.quantity = quantity;
 		this.image = image;
 	}
+	/*
+	 * public Book(int bookId,String title, String author, String genre, double
+	 * cost, int quantity, String image) { super(); this.bookId=bookId; this.title =
+	 * title; this.author = author; this.genre = genre; this.cost = cost;
+	 * this.quantity = quantity; this.image = image; }
+	 */
+
 
 	public int getBookId() {
 		return bookId;
 	}
 
-	public void setBookId(int bookId) {
-		this.bookId = bookId;
-	}
 
 	public String getTitle() {
 		return title;
