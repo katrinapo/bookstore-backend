@@ -1,4 +1,18 @@
-
+cloud:
+  aws:
+    credentials:
+      access-key: AKIAZUDPR6KH3GXIHWQG
+      secret-key: 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
+    region:
+      static: us-east-2
+    stack:
+      auto: false
+      
+application:
+  bucket:
+    name: bookimagesbucket
+      
+      
 server: 
   port: 9020
 # if this was a .properties spring.datasource.url = your url

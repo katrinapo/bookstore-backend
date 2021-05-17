@@ -4,14 +4,18 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
+
 import org.apache.log4j.Logger;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -42,7 +46,7 @@ public class BookController {
 	@GetMapping("/initial")
 	public ResponseEntity<String> insertInitialValues() {
 
-		List<Book> bList = new ArrayList<Book>(Arrays.asList(new Book(1,"Intro to Java", "Jacob", "Computers", 80.00,10,null),new Book(2,"Intro to Angular", "Jacob", "Computers", 90.00,8,null), new Book(3,"Intro to JavaScript", "Jacob", "Computers", 40.00,8,null),new Book("To Kill A Mocking Bird", "Harper Lee", "Fiction", 30.00,10,null),new Book("Animal Farm", "George Orwell", "Fiction", 20.00,10,null)));
+		List<Book> bList = new ArrayList<Book>(Arrays.asList(new Book("Intro to Java", "Jacob", "Computers", 80.00,10,null),new Book("Intro to Angular", "Jacob", "Computers", 90.00,8,null), new Book("Intro to JavaScript", "Jacob", "Computers", 40.00,8,null),new Book("To Kill A Mocking Bird", "Harper Lee", "Fiction", 30.00,10,null),new Book("Animal Farm", "George Orwell", "Fiction", 20.00,10,null)));
 		for (Book book: bList) {
 			bServ.insertBook(book);
 			log.info("Books inserted initially.");
@@ -114,4 +118,18 @@ public class BookController {
 		return new ResponseEntity<Object>(bServ.getBookById(book.getBookId()), HttpStatus.CREATED);
 	}
 	
+	
+	@PutMapping("/updatebook")
+	public Book updateBook(@RequestBody Book book) {
+		return bServ.updateBook(book);
+		
+	}
+	
+	@DeleteMapping("/delete")
+	public ResponseEntity<String> deleteBook(@RequestBody Book book) {
+		bServ.deleteBook(book);
+		return new ResponseEntity<>("resource Deleted", HttpStatus.GONE);
+		
+	}
+
 }

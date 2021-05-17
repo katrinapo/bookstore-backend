@@ -58,6 +58,7 @@ public class UserService {
 		return uRepo.findByUserNameAndPassWord(username, password);
 	}
 	
+
 	public void  updateResetPasswordToken(String token, String email) throws UserNotFoundException {
 		BookUser user = uRepo.findByEmail(email);
 		
@@ -81,5 +82,5 @@ public class UserService {
 		user.setResetPasswordToken(null);
 		uRepo.save(user);
 	}
-		
+
 }

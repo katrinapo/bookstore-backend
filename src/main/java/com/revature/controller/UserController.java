@@ -5,7 +5,6 @@ import java.util.Arrays;
 import java.util.LinkedHashMap;
 import java.util.List;
 
-import javax.servlet.http.HttpServletRequest;
 
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -140,10 +139,11 @@ public class UserController {
 			}
 			return new ResponseEntity<BookUser>(bookuser, HttpStatus.OK);
 	}
-	
+
 	@PostMapping("/register")
-    public Status registerUser(@Validated @RequestBody BookUser newUser) {
+    public Status registerUser(@RequestBody BookUser user)throws Exception {
         List<BookUser> users = uServ.getAllUsers();
+
         System.out.println("New user: " + newUser.toString());
         for (BookUser user : users) {
             System.out.println("Registered user: " + newUser.toString());
@@ -155,10 +155,27 @@ public class UserController {
         }
         uServ.insertUser(newUser);
 		log.info("New registration successful.");
+
+        
+        System.out.println("New user: " + user.toString());
+        for (BookUser user1 : users) {
+            System.out.println("Registered user: " + user.toString());
+            if (user1.getUserName().equals(user.getUserName())) {
+                System.out.println("Username Already exists!");
+                throw new Exception("Username already Exists");
+            }
+            if (user1.getEmail().equals(user.getEmail())) {
+                System.out.println("User with that email Already exists!");
+                throw new Exception("User with that email already Exists");
+            }
+        }
+        uServ.insertUser(user);
+
         return Status.SUCCESS;
     }
 	
 	@PostMapping("/login")
+
     public Status loginUser(@Validated @RequestBody BookUser user,HttpServletRequest request) {
         List<BookUser> users = uServ.getAllUsers();
         for (BookUser other : users) {
@@ -166,9 +183,16 @@ public class UserController {
     			log.info("Login successful.");
                 return Status.SUCCESS;
                
+
             }
-            request.getSession().setAttribute("user",user);
+          
+          if (userObj == null) {
+        	  throw new Exception("Bad credentials");
+          }
+          return userObj;
+           
         }
+
 		log.error("Unsuccessful login because credentials does not match.");
         return Status.FAILURE;
     }
