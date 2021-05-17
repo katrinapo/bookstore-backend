@@ -45,6 +45,16 @@ public class Book {
 		// TODO Auto-generated constructor stub
 	}
 
+	public Book(int bookId,String title, String author, String genre, double cost, int quantity, String image) {
+		super();
+		this.bookId = bookId;
+		this.title = title;
+		this.author = author;
+		this.genre = genre;
+		this.cost = cost;
+		this.quantity = quantity;
+		this.image = image;
+	}
 	
 	public Book(String title, String author, String genre, double cost, int quantity, String image) {
 		super();
@@ -120,6 +130,11 @@ public class Book {
 	public String toString() {
 		return "Book [bookId=" + bookId + ", title=" + title + ", author=" + author + ", genre=" + genre + ", cost="
 				+ cost + ", quantity=" + quantity + ", image=" + image + "]";
+	}
+
+	public void setBookId(int bookId) {
+		// TODO Auto-generated method stub
+		this.bookId = bookId;
 	}
 
 

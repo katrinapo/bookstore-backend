@@ -2,13 +2,10 @@ package com.revature.controller;
 
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.LinkedHashMap;
 import java.util.List;
-
 
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.repository.query.Param;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
@@ -16,19 +13,15 @@ import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.revature.model.BookUser;
 import com.revature.model.Status;
-import com.revature.service.MailService;
 import com.revature.service.UserService;
-import com.sun.mail.imap.Utility;
-
-import net.bytebuddy.utility.RandomString;
 
 @RestController
 @RequestMapping(value="/users")
@@ -37,7 +30,6 @@ public class UserController {
 	
 	private UserService uServ;
 	private static Logger log = Logger.getLogger(UserController.class);
-
 
 	public UserController() {
 		super();
@@ -49,7 +41,6 @@ public class UserController {
 		super();
 		this.uServ = uServ;
 	}
-	
 	
 	@GetMapping("/initial")
 	public ResponseEntity<String> insertInitialValues(){
@@ -78,7 +69,7 @@ public class UserController {
 		if(bUser==null) {
 			log.info("No User found by username.");
 			return new ResponseEntity<>(null,HttpStatus.NOT_FOUND);
-
+			
 		}
 		return new ResponseEntity<BookUser>(bUser,HttpStatus.OK);
 	}
@@ -91,7 +82,6 @@ public class UserController {
 			log.info("No User found by userrole.");
 			return new ResponseEntity<>(null,HttpStatus.NOT_FOUND);
 		}
-		log.info("Users by username returned.");
 		return new ResponseEntity<List<BookUser>>(bUser,HttpStatus.OK);
 	}
 	@GetMapping("/email")
@@ -119,7 +109,6 @@ public class UserController {
 		if(bookuser==null) {
 			log.info("No books by username found");
 			return new ResponseEntity<BookUser>(HttpStatus.NOT_FOUND);
-			
 		}
 		log.info("All books by username returned.");
 		return new ResponseEntity<BookUser>(bookuser, HttpStatus.OK);
@@ -143,19 +132,6 @@ public class UserController {
 	@PostMapping("/register")
     public Status registerUser(@RequestBody BookUser user)throws Exception {
         List<BookUser> users = uServ.getAllUsers();
-
-        System.out.println("New user: " + newUser.toString());
-        for (BookUser user : users) {
-            System.out.println("Registered user: " + newUser.toString());
-            if (user.equals(newUser)) {
-                System.out.println("User Already exists!");
-    			log.info("New registration unsuccessful because user already exists.");
-                return Status.USER_ALREADY_EXISTS;
-            }
-        }
-        uServ.insertUser(newUser);
-		log.info("New registration successful.");
-
         
         System.out.println("New user: " + user.toString());
         for (BookUser user1 : users) {
@@ -166,24 +142,24 @@ public class UserController {
             }
             if (user1.getEmail().equals(user.getEmail())) {
                 System.out.println("User with that email Already exists!");
+                log.info("New registration unsuccessful because user already exists.");
                 throw new Exception("User with that email already Exists");
             }
         }
         uServ.insertUser(user);
-
+        log.info("New registration successful.");
         return Status.SUCCESS;
     }
 	
 	@PostMapping("/login")
-
-    public Status loginUser(@Validated @RequestBody BookUser user,HttpServletRequest request) {
-        List<BookUser> users = uServ.getAllUsers();
-        for (BookUser other : users) {
-            if (other.getUserName().equals(user.getUserName())&& other.getPassWord().equals(user.getPassWord())) {
-    			log.info("Login successful.");
-                return Status.SUCCESS;
-               
-
+    public BookUser loginUser(@RequestBody BookUser user) throws Exception {
+		String tempUsername = user.getUserName();
+		String tempPassword = user.getPassWord();
+		BookUser userObj = null;
+          if(tempUsername!=null && tempPassword!=null) {
+        	  log.info("Login successful.");
+                userObj = uServ.getUserByUserNameAndPassWord(tempUsername, tempPassword);
+            
             }
           
           if (userObj == null) {
@@ -193,58 +169,4 @@ public class UserController {
            
         }
 
-		log.error("Unsuccessful login because credentials does not match.");
-        return Status.FAILURE;
-    }
-    @PostMapping("/logout")
-    public Status logUserOut(HttpServletRequest request) {
-    	request.getSession().invalidate();
-		log.info("Logout successful.");
-        return Status.SUCCESS;
-    }
-    
-    
-    @PostMapping("/forgotpassword1/{name}")
-    public String processForgotPasswordForm(@PathVariable String name, HttpServletRequest request) throws Exception {
-    	System.out.println(name);
-    	BookUser user = uServ.getUserByUserName(name);
-    	String email2 = user.getEmail();
-    	
-    	String token = RandomString.make(30);
-  	   	System.out.println("method is");
-    	
-  	   	try
-  	   	{
-  	   		uServ.updateResetPasswordToken(token, email2);
-
-  	   	String resetPasswordLink = "http://localhost:4200/createpassword?token=" + token;
-    	MailService.sendMail(email2,resetPasswordLink);
-    	log.info("Email to reset the password sent to user.");
-  	   	}
-  	   	catch(Exception ex){
-  	   		ex.printStackTrace();
-  	   	}
-
-		return null;
-    	
-    }
-
-     
-    @PostMapping("/resetpassword")
-    public Status processResetPassword(HttpServletRequest request) {
-    	String token = request.getParameter("token");
-    	String password = request.getParameter("password");
-    	
-    	BookUser user = uServ.getByResetPasswordToken(token);
-    	
-    	if(user != null) {
-    		uServ.updatePassword(user,password);
-			log.info("Password reset successful.");
-    		return Status.SUCCESS;
-    		
-    	}
-    	
-    	return Status.FAILURE;
-    }
-    
 }
