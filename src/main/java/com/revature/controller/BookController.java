@@ -46,7 +46,9 @@ public class BookController {
 	@GetMapping("/initial")
 	public ResponseEntity<String> insertInitialValues() {
 
+
 		List<Book> bList = new ArrayList<Book>(Arrays.asList(new Book("Animal Farm", "George Orwell", "Fiction", 4.00,10,"https://bookimagesbucket.s3.us-east-2.amazonaws.com/animalfarm.jpg"),new Book("To Kill A Mockingbird", "Harper Lee", "Fiction", 6.00,8,"https://bookimagesbucket.s3.us-east-2.amazonaws.com/tokillamockingbird.jpg"), new Book("Black Swan", "Nassim Taleb", "Economy", 6.00,8,null)));
+
 		for (Book book: bList) {
 			bServ.insertBook(book);
 			log.info("Books inserted initially.");

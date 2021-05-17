@@ -1,4 +1,4 @@
-package com.revature.service;
+  package com.revature.service;
 
 import java.util.List;
 
@@ -31,9 +31,11 @@ public class BookService {
 		bRepo.save(book);
 	}
 	
+
 	public void deleteBook(Book book) {
 		bRepo.delete(book);
 	}
+
 
 	public Book getBookById(int id){
 		return bRepo.findByBookId(id);
@@ -69,11 +71,13 @@ public class BookService {
 		return bRepo.save(b);
 	}
 	
+
 	public Book addImage(Book book) {
 		int id = book.getBookId();
 		Book b = bRepo.findByBookId(id);
 		b.setImage(book.getImage());
 		return bRepo.save(b);
 	}
+
 	
 }
