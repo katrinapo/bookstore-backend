@@ -7,6 +7,7 @@ import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
 
+import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.repository.query.Param;
 import org.springframework.http.HttpStatus;
@@ -36,6 +37,7 @@ import net.bytebuddy.utility.RandomString;
 public class UserController {
 	
 	private UserService uServ;
+	private static Logger log = Logger.getLogger(UserController.class);
 
 
 	public UserController() {
@@ -75,7 +77,9 @@ public class UserController {
 	public ResponseEntity<BookUser> getUserByUsername(@RequestParam("username") String name){
 		BookUser bUser = uServ.getUserByUserName(name);
 		if(bUser==null) {
+			log.info("No User found by username.");
 			return new ResponseEntity<>(null,HttpStatus.NOT_FOUND);
+
 		}
 		return new ResponseEntity<BookUser>(bUser,HttpStatus.OK);
 	}
@@ -85,14 +89,17 @@ public class UserController {
 	public ResponseEntity<List<BookUser>> getUserByRole(@PathVariable String userrole){
 		List<BookUser> bUser = uServ.getUserByRole(userrole);
 		if(bUser==null) {
+			log.info("No User found by userrole.");
 			return new ResponseEntity<>(null,HttpStatus.NOT_FOUND);
 		}
+		log.info("Users by username returned.");
 		return new ResponseEntity<List<BookUser>>(bUser,HttpStatus.OK);
 	}
 	@GetMapping("/email")
 	public ResponseEntity<BookUser> getUserByEmail(@RequestParam("email") String email){
 		BookUser bUser = uServ.getUserByEmail(email);
 		if(bUser==null) {
+			log.info("No User found by email.");
 			return new ResponseEntity<>(null,HttpStatus.NOT_FOUND);
 		}
 		return new ResponseEntity<BookUser>(bUser,HttpStatus.OK);
@@ -101,6 +108,7 @@ public class UserController {
 	public ResponseEntity<BookUser> getUser(@PathVariable int id){
 		BookUser bUser = uServ.getUserById(id);
 		if(bUser==null) {
+			log.info("No User found by id.");
 			return new ResponseEntity<>(null,HttpStatus.NOT_FOUND);
 		}
 		return new ResponseEntity<BookUser>(bUser,HttpStatus.OK);
@@ -110,8 +118,11 @@ public class UserController {
 	public ResponseEntity<BookUser> getBookUserNamePathParam(@PathVariable String username) {
 		BookUser bookuser = uServ.getUserByUserName(username);
 		if(bookuser==null) {
+			log.info("No books by username found");
 			return new ResponseEntity<BookUser>(HttpStatus.NOT_FOUND);
+			
 		}
+		log.info("All books by username returned.");
 		return new ResponseEntity<BookUser>(bookuser, HttpStatus.OK);
 	}
 	
@@ -138,10 +149,12 @@ public class UserController {
             System.out.println("Registered user: " + newUser.toString());
             if (user.equals(newUser)) {
                 System.out.println("User Already exists!");
+    			log.info("New registration unsuccessful because user already exists.");
                 return Status.USER_ALREADY_EXISTS;
             }
         }
         uServ.insertUser(newUser);
+		log.info("New registration successful.");
         return Status.SUCCESS;
     }
 	
@@ -150,17 +163,19 @@ public class UserController {
         List<BookUser> users = uServ.getAllUsers();
         for (BookUser other : users) {
             if (other.getUserName().equals(user.getUserName())&& other.getPassWord().equals(user.getPassWord())) {
-                
+    			log.info("Login successful.");
                 return Status.SUCCESS;
                
             }
             request.getSession().setAttribute("user",user);
         }
+		log.error("Unsuccessful login because credentials does not match.");
         return Status.FAILURE;
     }
     @PostMapping("/logout")
     public Status logUserOut(HttpServletRequest request) {
     	request.getSession().invalidate();
+		log.info("Logout successful.");
         return Status.SUCCESS;
     }
     
@@ -180,12 +195,13 @@ public class UserController {
 
   	   	String resetPasswordLink = "http://localhost:4200/createpassword?token=" + token;
     	MailService.sendMail(email2,resetPasswordLink);
+    	log.info("Email to reset the password sent to user.");
   	   	}
   	   	catch(Exception ex){
   	   		ex.printStackTrace();
   	   	}
 
-		return token;
+		return null;
     	
     }
 
@@ -199,7 +215,9 @@ public class UserController {
     	
     	if(user != null) {
     		uServ.updatePassword(user,password);
+			log.info("Password reset successful.");
     		return Status.SUCCESS;
+    		
     	}
     	
     	return Status.FAILURE;

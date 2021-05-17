@@ -78,6 +78,7 @@ public class UserService {
 
 	public void updatePassword(BookUser user, String newPassword) {
 		user.setPassWord(newPassword);
+		user.setResetPasswordToken(null);
 		uRepo.save(user);
 	}
 		
