@@ -1,5 +1,6 @@
 package com.revature.service;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.stereotype.Service;
@@ -40,7 +41,7 @@ public class BookOrderService {
 	public List<BookOrder> getByBookUser(BookUser bookuser) {
 		return (List<BookOrder>) oRepo.findByBookuser(bookuser);
 	}
-
+	
 	public BookOrder approveBookOrder(BookOrder order) {
 		int id= order.getOrderId();
 		
@@ -50,5 +51,11 @@ public class BookOrderService {
 		
 	}
 	
-
+	public List<BookOrder> getPendingBookOrders() {
+		return oRepo.findPendingBookOrders();
+	}
+	
+	public List<BookOrder> getApprovedBookOrders() {
+		return oRepo.findApprovedBookOrders();
+	}
 }

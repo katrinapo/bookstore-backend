@@ -43,7 +43,7 @@ public class BookController {
 	@GetMapping("/initial")
 	public ResponseEntity<String> insertInitialValues() {
 
-		List<Book> bList = new ArrayList<Book>(Arrays.asList(new Book("Intro to Java", "Jacob", "Computers", 80.00,10,null),new Book("Intro to Angular", "Jacob", "Computers", 90.00,8,null), new Book("Intro to JavaScript", "Jacob", "Computers", 40.00,8,null),new Book("To Kill A Mocking Bird", "Harper Lee", "Fiction", 30.00,10,null),new Book("Animal Farm", "George Orwell", "Fiction", 20.00,10,null)));
+		List<Book> bList = new ArrayList<Book>(Arrays.asList(new Book("Animal Farm", "George Orwell", "Fiction", 4.00,10,"https://bookimagesbucket.s3.us-east-2.amazonaws.com/animalfarm.jpg"),new Book("To Kill A Mockingbird", "Harper Lee", "Fiction", 6.00,8,"https://bookimagesbucket.s3.us-east-2.amazonaws.com/tokillamockingbird.jpg"), new Book("Black Swan", "Nassim Taleb", "Economy", 6.00,8,null)));
 		for (Book book: bList) {
 			bServ.insertBook(book);
 		}
@@ -115,6 +115,11 @@ public class BookController {
 	public Book updateBook(@RequestBody Book book) {
 		return bServ.updateBook(book);
 		
+	}
+	
+	@PutMapping("/addImage")
+	public Book uploadImage(@RequestBody Book book, String imageURL) {
+		 return bServ.addImage(book);
 	}
 	
 	@DeleteMapping("/delete")

@@ -11,6 +11,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -68,6 +69,15 @@ public class BookOrderController {
 		return new ResponseEntity<List<BookOrder>>(oServ.getAllBookOrders(), HttpStatus.OK);
 	}
 	
+	@GetMapping("/pending")
+	public ResponseEntity<List<BookOrder>> getPendingOrders() {
+		return new ResponseEntity<List<BookOrder>>(oServ.getPendingBookOrders(), HttpStatus.OK);
+	}
+	
+	@GetMapping("/approved")
+	public ResponseEntity<List<BookOrder>> getApprovedOrders() {
+		return new ResponseEntity<List<BookOrder>>(oServ.getApprovedBookOrders(), HttpStatus.OK);
+	}
 
 	@GetMapping("/bookorder")
 	public ResponseEntity<BookOrder> getBookOrderByIdPathParam(@RequestParam("orderid") int id) {

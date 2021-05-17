@@ -69,4 +69,11 @@ public class BookService {
 		return bRepo.save(b);
 	}
 	
+	public Book addImage(Book book) {
+		int id = book.getBookId();
+		Book b = bRepo.findByBookId(id);
+		b.setImage(book.getImage());
+		return bRepo.save(b);
+	}
+	
 }
