@@ -8,6 +8,7 @@ import java.util.List;
 import javax.servlet.http.HttpServletRequest;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.repository.query.Param;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
@@ -25,6 +26,9 @@ import com.revature.model.BookUser;
 import com.revature.model.Status;
 import com.revature.service.MailService;
 import com.revature.service.UserService;
+import com.sun.mail.imap.Utility;
+
+import net.bytebuddy.utility.RandomString;
 
 @RestController
 @RequestMapping(value="/users")
@@ -160,46 +164,45 @@ public class UserController {
         return Status.SUCCESS;
     }
     
-    @PostMapping("/forgotpassword")
-    public String processForgotPasswordForm(@RequestBody LinkedHashMap<String,String> email) throws Exception {
-  	   	System.out.println("method is hit");
-    	
-    	System.out.println("Email" +email.get("email"));
-    	MailService.sendMail(email.get("email"));
-		return null;
-    	
-    }
     
-    @GetMapping("/forgotpassword1")
-    public String processForgotPasswordForm(@RequestParam String email) throws Exception {
-    	BookUser user = uServ.getUserByUserName(email);
+    @PostMapping("/forgotpassword1/{name}")
+    public String processForgotPasswordForm(@PathVariable String name, HttpServletRequest request) throws Exception {
+    	System.out.println(name);
+    	BookUser user = uServ.getUserByUserName(name);
     	String email2 = user.getEmail();
-  	   	System.out.println("method is hit");
     	
-    	System.out.println("Email" +email);
-    	MailService.sendMail(email2);
-		return null;
+    	String token = RandomString.make(30);
+  	   	System.out.println("method is");
     	
-    }
-    
-    
-    @PutMapping("/updatepassword")
-    public Status updatePassword(@RequestBody LinkedHashMap<String,String> user, @RequestBody String password) {
-		System.out.println("user is " + user.get("user"));
-		System.out.println("Password is "+password);
-//    	uServ.updatePassword(user, password);
-	
-		return Status.SUCCESS;
-    }
-    
-//    public static void main(String[] args) throws Exception {
-//		MailService.sendMail(email);
-//    	UserController uc = new UserController();
-//    	
-//    	BookUser user1 = new BookUser(1,"bobjones@test.com","Bob","Jones","123123","9089992323","testUser1","customer");
-//    	String password = "456789";
-//    	uc.updatePassword(user1, password);
-//		}    
-	
+  	   	try
+  	   	{
+  	   		uServ.updateResetPasswordToken(token, email2);
 
+  	   	String resetPasswordLink = "http://localhost:4200/createpassword?token=" + token;
+    	MailService.sendMail(email2,resetPasswordLink);
+  	   	}
+  	   	catch(Exception ex){
+  	   		ex.printStackTrace();
+  	   	}
+
+		return token;
+    	
+    }
+
+     
+    @PostMapping("/resetpassword")
+    public Status processResetPassword(HttpServletRequest request) {
+    	String token = request.getParameter("token");
+    	String password = request.getParameter("password");
+    	
+    	BookUser user = uServ.getByResetPasswordToken(token);
+    	
+    	if(user != null) {
+    		uServ.updatePassword(user,password);
+    		return Status.SUCCESS;
+    	}
+    	
+    	return Status.FAILURE;
+    }
+    
 }

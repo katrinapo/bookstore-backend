@@ -14,7 +14,7 @@ import javax.mail.internet.MimeMessage;
 
 public class MailService {
 
-	public static void sendMail(String recipient) throws Exception {
+	public static void sendMail(String recipient, String link) throws Exception {
 		System.out.println("preparing to send email");
 		
 		System.out.println("recipient is " +recipient);
@@ -25,8 +25,8 @@ public class MailService {
 		properties.put("mail.smtp.host", "smtp.gmail.com");
 		properties.put("mail.smtp.port", "587");
 		
-		String myAccountEmail = "shrestha.zenith@gmail.com"; 
-		String password = "goLe62426$&";
+		String myAccountEmail = "customercare.bookstore@gmail.com"; 
+		String password = "newPassw0rd";
 		
 		Session session = Session.getInstance(properties,new Authenticator() {
 			@Override
@@ -35,22 +35,27 @@ public class MailService {
 			}
 		});
 		
-		Message message = prepareMessage(session, myAccountEmail, recipient);
+		Message message = prepareMessage(session, myAccountEmail, recipient, link);
 		
 		Transport.send(message);
 		System.out.println("Message sent successfully");
 	}
 	
-	private static Message prepareMessage(Session session, String myAccountEmail, String recipient) {
+	private static Message prepareMessage(Session session, String myAccountEmail, String recipient, String link) {
 		
 		try {
 			Message message = new MimeMessage(session);
 			message.setFrom(new InternetAddress(myAccountEmail));
 			message.setRecipient(Message.RecipientType.TO, new InternetAddress(recipient));
-			message.setSubject("Reset Password");
-			String htmlCode = "<h4>Hi,<br>"
-					+ " Please click the this <span><a href='http://localhost:4200/createpassword'>link</a></span> "
-					+ "to reset the password.</h4>";
+			message.setSubject("Link to reset password");
+			String htmlCode = "<p>Hello,</p>"
+		            + "<p>You have requested to reset your password.</p>"
+		            + "<p>Click the link below to change your password:</p>"
+		            + "<p><a href=\"" + link + "\">Change my password</a></p>"
+		            + "<br>"
+		            + "<p>Ignore this email if you do remember your password, "
+		            + "or you have not made the request.</p>"+
+					"<br><br>Regards,<br>Bookstore Team";
 			message.setContent(htmlCode, "text/html");
 			return message;
 		}
@@ -62,9 +67,5 @@ public class MailService {
 			return null;
 		
 	}
-//	
-//	public static void main(String[] args) throws Exception {
-//		MailService.sendMail("shrestha.zenith@gmail.com");
-//	}
-//	
+
 }
