@@ -11,6 +11,7 @@
 	<groupId>com.revature</groupId>
 	<artifactId>Bookstore</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
+	<packaging>jar</packaging>
 	<name>Bookstore</name>
 	<description>Demo project for Spring Boot</description>
 	<properties>
@@ -95,13 +96,33 @@
 
 	</dependencies>
 
-	<build>
-		<plugins>
-			<plugin>
-				<groupId>org.springframework.boot</groupId>
-				<artifactId>spring-boot-maven-plugin</artifactId>
-			</plugin>
-		</plugins>
-	</build>
+<build>
+  <plugins>
+<plugin>
+    <groupId>org.springframework.boot</groupId>
+    <artifactId>spring-boot-maven-plugin</artifactId>
+    <executions>
+        <execution>
+            <goals>
+                <goal>repackage</goal>
+            </goals>
+            <configuration>
+                <classifier>spring-boot</classifier>
+                <mainClass>
+                  com.baeldung.executable.ExecutableMavenJar
+                </mainClass>
+            </configuration>
+        </execution>
+    </executions>
+</plugin>
+ <plugin>
+   <groupId>org.apache.maven.plugins</groupId>
+   <artifactId>maven-surefire-plugin</artifactId>
+   <configuration>
+     <testFailureIgnore>true</testFailureIgnore>
+   </configuration>
+ </plugin>
+  </plugins>
+</build>
 
 </project>
