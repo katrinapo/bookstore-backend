@@ -187,7 +187,7 @@ public class UserController {
   	   	{
   	   		uServ.updateResetPasswordToken(token, email2);
 
-  	   	String resetPasswordLink = "http://localhost:4200/createpassword?token=" + token;
+  	   	String resetPasswordLink = "http://bookstorefrontend.s3-website.us-east-2.amazonaws.com/createpassword?token=" + token;
     	MailService.sendMail(email2,resetPasswordLink);
     	log.info("Email to reset the password sent to user.");
   	   	}
