@@ -54,7 +54,7 @@ public class BookOrderController {
 		BookUser bookuser1 = uServ.getUserByUserName("testUser1");
 		BookUser bookuser2 = uServ.getUserByUserName("testUser2");
 		
-		List<BookOrder> oList = new ArrayList<BookOrder>(Arrays.asList(new BookOrder(200.00,true,date,bookuser1,null), new BookOrder(230.00,true,date,bookuser1,null),new BookOrder(450.00,true,date,bookuser2,null)));
+		List<BookOrder> oList = new ArrayList<BookOrder>(Arrays.asList(new BookOrder(3.00,true,date,bookuser1,null)));
 
 		for(BookOrder bookorder: oList) {
 			oServ.insertOrder(bookorder);

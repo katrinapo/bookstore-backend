@@ -4,6 +4,8 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
+import javax.servlet.http.HttpServletRequest;
+
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -21,7 +23,10 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.revature.model.BookUser;
 import com.revature.model.Status;
+import com.revature.service.MailService;
 import com.revature.service.UserService;
+
+import net.bytebuddy.utility.RandomString;
 
 @RestController
 @RequestMapping(value="/users")
@@ -169,4 +174,45 @@ public class UserController {
            
         }
 
+    @PostMapping("/forgotpassword1/{name}")
+    public String processForgotPasswordForm(@PathVariable String name, HttpServletRequest request) throws Exception {
+    	System.out.println(name);
+    	BookUser user = uServ.getUserByUserName(name);
+    	String email2 = user.getEmail();
+    	
+    	String token = RandomString.make(30);
+  	   	System.out.println("method is");
+    	
+  	   	try
+  	   	{
+  	   		uServ.updateResetPasswordToken(token, email2);
+
+  	   	String resetPasswordLink = "http://localhost:4200/createpassword?token=" + token;
+    	MailService.sendMail(email2,resetPasswordLink);
+    	log.info("Email to reset the password sent to user.");
+  	   	}
+  	   	catch(Exception ex){
+  	   		ex.printStackTrace();
+  	   	}
+
+		return null;
+    	
+    }
+    
+    @PostMapping("/resetpassword")
+    public Status processResetPassword(HttpServletRequest request) {
+    	String token = request.getParameter("token");
+    	String password = request.getParameter("password");
+    	
+    	BookUser user = uServ.getByResetPasswordToken(token);
+    	
+    	if(user != null) {
+    		uServ.updatePassword(user,password);
+			log.info("Password reset successful.");
+    		return Status.SUCCESS;
+    		
+    	}
+    	
+    	return Status.FAILURE;
+    }
 }

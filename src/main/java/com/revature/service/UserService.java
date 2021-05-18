@@ -28,8 +28,6 @@ public class UserService {
 		return uRepo.findAll();
 	}
 	
-	
-	
 	public void insertUser(BookUser bookUser) {
 		uRepo.save(bookUser);
 	}
