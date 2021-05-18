@@ -44,20 +44,10 @@ public class BookOrderService {
 	}
 	
 	public BookOrder approveBookOrder(BookOrder order) {
-		
-		List<Book> books = order.getBooks();
-		
-		for(Book book : books) {
-			book.setQuantity(book.getQuantity() -1);
-			bRepo.save(book);
-		}
-		
-		
 		int id= order.getOrderId();
 		
 		BookOrder bOrder = oRepo.findByOrderId(id);
 		bOrder.setIsapproved(true);
-		
 		return oRepo.save(bOrder);
 		
 	}
