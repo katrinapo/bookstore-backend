@@ -27,7 +27,7 @@ Future to-dos:
 * Administrators can filter orders based on customer
 
 ## Contributors
-Mantesh Sandhu
-Veerpal Kaur
-Chandra Shrestha
-Katrina Po
+* Mantesh Sandhu
+* Veerpal Kaur
+* Chandra Shrestha
+* Katrina Po
